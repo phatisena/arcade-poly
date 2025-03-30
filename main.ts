@@ -73,22 +73,6 @@ export enum SortingMethods {
         return mymesh.cts
     }
 
-    //% blockid=poly_setvertice
-    //% block=" $mymesh set vertice to $ucv"
-    //% mymesh.shadow=variables_get mymesh.defl=myMesh
-    //% ucv.shadow=list_create_with ucv.defl=poly_getvertice
-    export function setverticearr(mymesh: mesh, ucv: cv[]) {
-        mymesh.cvs = ucv
-    }
-
-    //% blockid=poly_settriangle
-    //% block=" $mymesh set triangle to $uct"
-    //% mymesh.shadow=variables_get mymesh.defl=myMesh
-    //% uct.shadow=list_create_with uct.defl=poly_gettriangle
-    export function settrianglearr(mymesh: mesh, uct: ct[]) {
-        mymesh.cts = uct
-    }
-
     //% blockid=poly_rendermesh
     //% block=" $mymesh render to $image"
     //% mymesh.shadow=variables_get mymesh.defl=myMesh
