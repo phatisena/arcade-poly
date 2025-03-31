@@ -66,6 +66,7 @@ namespace polymesh {
 
     //% blockid=poly_newmesh
     //% block="create new mesh"
+    //% blockSetVariable=myMenu
     export function newmesh() {
         return new cmesh()
     }
@@ -73,7 +74,7 @@ namespace polymesh {
     //% blockid=poly_setvertice
     //% block=" $mymesh set vertice array by $ccv"
     //% mymesh.shadow=variables_get mymesh.defl=myMesh
-    //% ccv.shadow="lists_create_with" ccv.defl=poly_clsvertice
+    //% ccv.shadow=lists_create_with ccv.defl=poly_clsvertice
     export function setvertice(mymesh: cmesh, ccv: cvc[]) {
         mymesh.v.cvs = []
         for (let clsv of ccv) mymesh.v.cvs.push({ x: clsv.x, y: clsv.y, z: clsv.z})
@@ -82,7 +83,7 @@ namespace polymesh {
     //% blockid=poly_settriangle
     //% block=" $mymesh set triangle array by $cct"
     //% mymesh.shadow=variables_get mymesh.defl=myMesh
-    //% cct.shadow="lists_create_with" cct.defl=poly_clstriangle
+    //% cct.shadow=lists_create_with cct.defl=poly_clstriangle
     export function settriangle(mymesh: cmesh, cct: ctc[]) {
         mymesh.v.cts = []
         for (let clsv of cct) mymesh.v.cts.push({ indices: [ clsv.x, clsv.y, clsv.z], color: clsv.c })
