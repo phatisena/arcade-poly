@@ -80,9 +80,9 @@ namespace polymesh {
     }
 
     //% blockid=poly_settriangle
-    //% block=" $mymesh set vertice array by $ccv"
+    //% block=" $mymesh set triangle array by $cct"
     //% mymesh.shadow=variables_get mymesh.defl=myMesh
-    //% ccv.shadow="lists_create_with" ccv.defl=poly_clstriangle
+    //% cct.shadow="lists_create_with" cct.defl=poly_clstriangle
     export function settriangle(mymesh: cmesh, cct: ctc[]) {
         mymesh.v.cts = []
         for (let clsv of cct) mymesh.v.cts.push({ indices: [ clsv.x, clsv.y, clsv.z], color: clsv.c })
@@ -336,7 +336,6 @@ namespace polymesh {
     export function change(choice: Angles, x: number) {
         if (choice === 0) {
             axchange += x
-
         } else if (choice === 1) {
             aychange += x
         } else if (choice === 2) {
@@ -348,7 +347,6 @@ namespace polymesh {
     export function changecam(choice: Cameras, x: number) {
         if (choice === 0) {
             camx += x
-
         } else if (choice === 1) {
             camy += x
         } else if (choice === 2) {
@@ -360,7 +358,6 @@ namespace polymesh {
     export function setangle(choice: Angles, x: number) {
         if (choice === 0) {
             axchange = x
-
         } else if (choice === 1) {
             aychange = x
         } else if (choice === 2) {
