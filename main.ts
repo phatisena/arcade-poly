@@ -2,36 +2,36 @@
 //% block="poly mesh" color="#279139" icon="\uf1b2"
 namespace polymesh {
 
-export enum Angles {
-    //% block="angle x"
-    Angle_X,
-    //% block="angle y"
-    Angle_Y,
-    //% block="angle z"
-    Angle_Z,
-}
-export enum Cameras {
-    //% block="cam x"
-    Cam_x,
-    //% block="cam y"
-    Cam_y,
-    //% block="cam z"
-    Cam_z,
-}
-export enum MeshType {
-    //% block="vertice"
-    cv,
-    //% block="triangle"
-    ct,
-}
-export enum SortingMethods {
-    //% block="accurate"
-    Accurate,
-    //% block="fast"
-    Fast,
-    //% block="fast and accurate"
-    Fast_and_Accurate,
-}
+    export enum Angles {
+        //% block="angle x"
+        Angle_X,
+        //% block="angle y"
+        Angle_Y,
+        //% block="angle z"
+        Angle_Z,
+    }
+    export enum Cameras {
+        //% block="cam x"
+        Cam_x,
+        //% block="cam y"
+        Cam_y,
+        //% block="cam z"
+        Cam_z,
+    }
+    export enum MeshType {
+        //% block="vertice"
+        cv,
+        //% block="triangle"
+        ct,
+    }
+    export enum SortingMethods {
+        //% block="accurate"
+        Accurate,
+        //% block="fast"
+        Fast,
+        //% block="fast and accurate"
+        Fast_and_Accurate,
+    }
 
     export interface cv {
         x: number
@@ -49,6 +49,12 @@ export enum SortingMethods {
         cvs: cv[]
     }
 
+    export class cvc { constructor(public x: number, public y: number, public z: number) { } }
+
+    export class ctc { constructor(public x: number, public y: number, public z: number, public c: number) { } }
+
+    export class cmesh { public v: mesh}
+
     let axchange = 0
     let azchange = 0
     let camx = 0
@@ -61,23 +67,32 @@ export enum SortingMethods {
     //% blockid=poly_newmesh
     //% block="create new mesh"
     export function newmesh() {
-        let umesh: mesh
-        return umesh
+        return new cmesh()
     }
 
-    //% blockid=poly_getmesh
-    //% block="get $mymesh as $mesht"
+    //% blockid=poly_setvertice
+    //% block=" $mymesh set vertice array by $ccv"
     //% mymesh.shadow=variables_get mymesh.defl=myMesh
-    export function getmesh(mymesh: mesh, mesht: MeshType) {
-        if (mesht > 0) return mymesh.cvs
-        return mymesh.cts
+    //% ccv.shadow=list_create_with ccv.defl=poly_clsvertice
+    export function setvertice(mymesh: cmesh, ccv: cvc[]) {
+        mymesh.v.cvs = []
+        for (let clsv of ccv) mymesh.v.cvs.push({ x: clsv.x, y: clsv.y, z: clsv.z})
+    }
+
+    //% blockid=poly_settriangle
+    //% block=" $mymesh set vertice array by $ccv"
+    //% mymesh.shadow=variables_get mymesh.defl=myMesh
+    //% ccv.shadow=list_create_with ccv.defl=poly_clsvertice
+    export function settriangle(mymesh: cmesh, cct: ctc[]) {
+        mymesh.v.cts = []
+        for (let clsv of cct) mymesh.v.cts.push({ indices: [ clsv.x, clsv.y, clsv.z], color: clsv.c })
     }
 
     //% blockid=poly_rendermesh
     //% block=" $mymesh render to $image"
     //% mymesh.shadow=variables_get mymesh.defl=myMesh
     //% image.shadow=screen_image_picker
-    export function render(mymesh: mesh, image: Image) {
+    export function render(mymesh: cmesh, image: Image) {
         function updateCube() {
             let bg = image;
             let bgsave = bg.clone()
@@ -92,12 +107,12 @@ export enum SortingMethods {
             let size = 1
             size += sizechange
 
-            let vertices = mymesh.cvs;
-            let triangles = mymesh.cts;
-            mymesh.cts = [
+            let vertices = mymesh.v.cvs;
+            let triangles = mymesh.v.cts;
+            mymesh.v.cts = [
                 { indices: [0, 0, 0], color: 0 }
             ];
-            mymesh.cvs = [
+            mymesh.v.cvs = [
                 { x: 0, y: 0, z: 0 },
             ];
             let zerosArray: number[] = [];
@@ -304,6 +319,18 @@ export enum SortingMethods {
         }
     }
 
+    //% blockid=poly_clsvertice
+    //% block="vertice of x $x y $y z $z" 
+    export function clsvertice(x: number, y: number, z: number): cvc {
+        return new cvc(x, y, z,)
+    }
+
+    //% blockid=poly_clstriangle
+    //% block="triangle of indice 1 $x indice 2 $y indice 3 $z color $col"
+    export function clstriangle(x: number, y: number, z: number, col: number): ctc {
+        return new ctc(x, y, z, col)
+    }
+
     //% blockid=poly_angle_change
     //% block="change $choice by $x"
     export function change(choice: Angles, x: number) {
@@ -383,3 +410,4 @@ export enum SortingMethods {
     }
 
 }
+
